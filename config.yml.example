@@ -1,0 +1,4 @@
+webhook_url: '' # from slack
+modifier: allianceID # entity you wish to pull kill mails for, i.e. alliance, character, corp, system etc
+modifier_id: '' # id of above entity
+last_kill: '' # killID of the kill mail you wish to start from - automatically updated by script

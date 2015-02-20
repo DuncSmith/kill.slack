@@ -1,0 +1,6 @@
+*.yml
+*.json
+*.log
+vendor/bundle
+.bundle
+bin/
