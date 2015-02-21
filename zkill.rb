@@ -3,18 +3,15 @@ require 'json'
 require 'rest_client'
 require 'rufus/scheduler'
 require 'csv'
-require 'logger'
 require 'action_view'
 
 $approot = File.expand_path(File.dirname(__FILE__))
 @config = YAML.load_file("#{$approot}/config.yml")
 @systems = Hash[*CSV.read("#{$approot}/systems.csv").flatten]
 @ships = Hash[*CSV.read("#{$approot}/ships.csv").flatten]
-@logger = Logger.new('logfile.log')
 
 def process_kills
   k = Kills.new(@config)
-  @logger.info("Checking Kills #{k}")
   if k.count > 0 then
     k.kills.each do |kill|
       RestClient.post @config["webhook_url"], payload(kill).to_json
@@ -47,10 +44,6 @@ def payload(kill)
   victim_alliance_name = kill["victim"]["allianceName"]
 
   killer = kill["attackers"].find { |a| a["finalBlow"].to_s == "1" } || {}
-
-  @logger.debug("final blow: #{killer["characterName"]}")
-  @logger.debug(kill)
-
   final_blow_name =  killer["characterName"]
   final_blow_id = killer["characterID"]
   final_blow_corp_id = killer["corporationID"]
@@ -139,7 +132,6 @@ def payload(kill)
   }
   return pl
 end
-
 
 def update_last_kill(id)
   @config["last_kill"] = id.to_s
