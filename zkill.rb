@@ -187,7 +187,7 @@ end
 
 SCHEDULER = Rufus::Scheduler.new
 
-SCHEDULER.every '1m', :first => :now do
+SCHEDULER.every '5m', :first => :now do
   process_kills
 end
 
